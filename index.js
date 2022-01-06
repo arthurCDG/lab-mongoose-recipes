@@ -19,7 +19,7 @@ mongoose
     (async function loadAllPromises() {
       try {
         /* ----------------------------- ITERATION 2 -------------------------------------- */
-        await Recipe.create({
+        const oneRecipe = await Recipe.create({
           title: "The Best Vegetable Lasagna",
           level: "Amateur Chef",
           ingredients: [
@@ -41,37 +41,30 @@ mongoose
             "https://assets.afcdn.com/recipe/20210212/117942_w96h96c1cx1060cy707cxb2121cyb1414.webp",
           duration: 45,
           creator: "Arthur",
-        })
-          .then((recipe) => {
-            console.log(recipe.title);
-          })
-          .catch((err) => console.error(err));
+        });
+
+        console.log(oneRecipe.title);
 
         /* ----------------------------- ITERATION 3 -------------------------------------- */
-        await Recipe.insertMany(data)
-          .then((allRecipes) => {
-            allRecipes.forEach((recipe) => console.log(recipe.title));
-          })
-          .catch((err) => console.error(err));
+        const allRecipes = await Recipe.insertMany(data);
+        allRecipes.forEach((recipe) => console.log(recipe.title));
 
         /* ----------------------------- ITERATION 4 -------------------------------------- */
-        await Recipe.findOneAndUpdate(
+        const findRigatoniAndUpdate = await Recipe.findOneAndUpdate(
           { title: "Rigatoni alla Genovese" },
           { duration: 100 }
-        )
-          .then(console.log("Updated!"))
-          .catch((err) => console.error("Error!", err));
+        );
+        console.log("updated this recipe: ", findRigatoniAndUpdate.title);
 
         /* ----------------------------- ITERATION 5 -------------------------------------- */
-        await Recipe.deleteOne({ title: "Carrot Cake" })
-          .then(console.log("Deleted!"))
-          .catch((err) => console.error("Error!", err));
+        const deleteCarrotCake = await Recipe.deleteOne({
+          title: "Carrot Cake",
+        });
+        console.log("Deleted this recipe: ", deleteCarrotCake.title);
 
         /* ----------------------------- ITERATION 6 -------------------------------------- */
-        await mongoose.connection
-          .close()
-          .then(console.log("Disconnected!"))
-          .catch((err) => console.error(err));
+        const closeMongoose = await mongoose.connection.close();
+        console.log("Disconnected!", closeMongoose);
       } catch (err) {
         console.error(err);
       }
